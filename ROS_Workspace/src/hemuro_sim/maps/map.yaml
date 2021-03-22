@@ -1,4 +1,4 @@
-image: /home/afonso/github/HeMuRo_Demo/ROS_Workspace/src/hemuro_sim/maps/test_map.pgm
+image: /home/afonso/github/HeMuRo_Demo/ROS_Workspace/src/hemuro_sim/maps/map.pgm
 resolution: 0.010000
 origin: [-15.240000, -5.000000, 0.000000]
 negate: 0

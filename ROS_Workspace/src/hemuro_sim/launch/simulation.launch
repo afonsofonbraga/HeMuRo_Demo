@@ -18,7 +18,7 @@
     </include>
   
   
-  <arg name="map_file" default="$(find hemuro_sim)/maps/test_map.pgm"/>
+  <arg name="map_file" default="$(find hemuro_sim)/maps/map.yaml"/>
   
   <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" >
         <param name="frame_id" value="map"/>
