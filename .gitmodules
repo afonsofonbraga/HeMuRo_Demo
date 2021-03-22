@@ -1,0 +1,16 @@
+[submodule "ROS_Workspace/src/rosbot_description"]
+	path = ROS_Workspace/src/rosbot_description
+	url = https://github.com/afonsofonbraga/rosbot_description
+	branch = master
+[submodule "ROS_Workspace/src/pioneer_p3dx_model"]
+	path = ROS_Workspace/src/pioneer_p3dx_model
+	url = https://github.com/afonsofonbraga/pioneer_p3dx_model
+	branch = master
+[submodule "ROS_Workspace/src/aws-robomaker-hospital-world"]
+	path = ROS_Workspace/src/aws-robomaker-hospital-world
+	url = https://github.com/afonsofonbraga/aws-robomaker-hospital-world
+	branch = master
+[submodule "ROS_Workspace/src/battery_simulator"]
+	path = ROS_Workspace/src/battery_simulator
+	url = https://github.com/afonsofonbraga/battery_simulator
+	branch = master
