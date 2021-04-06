@@ -1,0 +1,65 @@
+global_costmap:
+    #Pre-Hydro Parameters
+    #Hydro and later releases use plugins for all costmap_2d layers. If you don't provide a plugins parameter then the initialization code will assume that your configuration is pre-Hydro and will load a default set of plugins with default namespaces. Your parameters will be moved to the new namespaces automagically. The default namespaces are static_layer, obstacle_layer and inflation_layer. Some tutorials (and books) still refer to pre-Hydro parameters, so pay close attention. To be safe, be sure to provide a plugins parameter.
+
+    #Plugins
+    #~<name>/plugins (sequence, default: pre-Hydro behavior)
+    #Sequence of plugin specifications, one per layer. Each specification is a dictionary with name and type fields. The name is used to define the parameter namespace for the plugin. See the tutorials for examples.
+
+    #Coordinate frame and tf parameters
+    #~<name>/global_frame (string, default: "/map")
+    #The global frame for the costmap to operate in.
+    global_frame: map
+
+    #~<name>/robot_base_frame (string, default: "base_link")
+    #The name of the frame for the base link of the robot.
+    robot_base_frame: base_link
+
+    #~<name>/transform_tolerance (double, default: 0.2)
+    #Specifies the delay in transform (tf) data that is tolerable in seconds. This parameter serves as a safeguard to losing a link in the tf tree while still allowing an amount of latency the user is comfortable with to exist in the system. For example, a transform being 0.2 seconds out-of-date may be tolerable, but a transform being 8 seconds out of date is not. If the tf transform between the coordinate frames specified by the global_frame and robot_base_frame parameters is transform_tolerance seconds older than ros::Time::now(), then the navigation stack will stop the robot.
+    transform_tolerance: 0.5
+
+    #Rate parameters
+    #~<name>/update_frequency (double, default: 5.0)
+    #The frequency in Hz for the map to be updated.
+    update_frequency: 1.5
+
+    #~<name>/publish_frequency (double, default: 0.0)
+    #The frequency in Hz for the map to be publish display information.
+    publish_frequency: 0.5
+
+
+    #Map management parameters
+    #~<name>/rolling_window (bool, default: false)
+    #Whether or not to use a rolling window version of the costmap. If the static_map parameter is set to true, this parameter must be set to false.
+
+
+    #~<name>/always_send_full_costmap (bool, default: false)
+    #If true the full costmap is published to "~<name>/costmap" every update. If false only the part of the costmap that has changed is published on the "~<name>/costmap_updates" topic.
+    always_send_full_costmap: true
+
+    #The following parameters can be overwritten by some layers, namely the static map layer.
+    #~<name>/width (int, default: 10)
+    #The width of the map in meters.
+    width: 10
+
+    #~<name>/height (int, default: 10)
+    #The height of the map in meters.
+    height: 10
+
+    #~<name>/resolution (double, default: 0.05)
+    #The resolution of the map in meters/cell.
+    resolution: 0.01
+
+    #~<name>/origin_x (double, default: 0.0)
+    #The x origin of the map in the global frame in meters.
+    origin_x: 0
+
+    #~<name>/origin_y (double, default: 0.0)
+    #The y origin of the map in the global frame in meters.
+    origin_y: 0
+    
+    plugins:
+    - {name: obstacles_layer, type: "costmap_2d::ObstacleLayer"}
+    - {name: inflater_layer, type: "costmap_2d::InflationLayer"}
+    - {name: static_layer, type: "costmap_2d::StaticLayer"}

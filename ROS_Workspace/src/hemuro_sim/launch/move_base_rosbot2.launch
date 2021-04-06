@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <launch>    
   <arg name="my_ns" default= ""/>
   <arg name="initial_pose_x" default = "1"/>
@@ -31,28 +32,34 @@
   </node> -->
 
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
-    <rosparam file="$(find hemuro_sim)/param/Rosbot/costmap_common_params.yaml" command="load" ns="global_costmap" />
-    <rosparam file="$(find hemuro_sim)/param/Rosbot/costmap_common_params.yaml" command="load" ns="local_costmap" />
-    <rosparam file="$(find hemuro_sim)/param/Rosbot/local_costmap_params.yaml" command="load" />
-    <rosparam file="$(find hemuro_sim)/param/Rosbot/global_costmap_params.yaml" command="load" />
-    <rosparam file="$(find hemuro_sim)/param/Rosbot/trajectory_planner.yaml" command="load" />
-    <rosparam file="$(find hemuro_sim)/param/Rosbot/move_base_params.yaml" command="load" />
+    <rosparam file="$(find hemuro_sim)/param/Rosbot2/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find hemuro_sim)/param/Rosbot2/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find hemuro_sim)/param/Rosbot2/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find hemuro_sim)/param/Rosbot2/global_costmap_params.yaml" command="load" />
+    
+    <rosparam file="$(find hemuro_sim)/param/Rosbot2/move_base_params.yaml" command="load" />
+    <rosparam file="$(find hemuro_sim)/param/Rosbot2/global_planner_params.yaml" command="load" />
+    <!--<rosparam file="$(find hemuro_sim)/param/Rosbot2/local_planner_params.yaml" command="load" />-->
+    
+    <rosparam file="$(find hemuro_sim)/param/Rosbot2/trajectory_planner.yaml" command="load" />
+    <!--<rosparam file="$(find hemuro_sim)/param/Rosbot2/move_base_params.yaml" command="load" /> -->
 
     <remap from="map" to="/map"/>
     <remap from="cmd_vel" to="cmd_vel"/>
     <remap from="odom" to="odom"/>
     <remap from="scan" to="/$(arg my_ns)/laser/scan"/>
-    <param name="move_base/DWAPlannerROS/yaw_goal_tolerance" value="1.0"/>
-    <param name="move_base/DWAPlannerROS/xy_goal_tolerance" value="1.0"/>
+    <!--<param name="move_base/DWAPlannerROS/yaw_goal_tolerance" value="1.0"/>
+    <param name="move_base/DWAPlannerROS/xy_goal_tolerance" value="1.0"/> -->
 
-    <param name="~/global_costmap/laser_scan_sensor/sensor_frame" value="$(arg my_ns)_tf/laser" />
-    <param name="~/local_costmap/laser_scan_sensor/sensor_frame" value="$(arg my_ns)_tf/laser" />
+    <param name="~/global_costmap/obstacles_layer/scan/sensor_frame" value="$(arg my_ns)_tf/laser" />
+    <param name="~/local_costmap/obstacles_layer/scan/sensor_frame" value="$(arg my_ns)_tf/laser" />
 
-    <param name="~/global_costmap/laser_scan_sensor/topic" value="/$(arg my_ns)/laser/scan" />
-    <param name="~/local_costmap/laser_scan_sensor/topic" value="/$(arg my_ns)/laser/scan" />
+    <param name="~/global_costmap/obstacles_layer/scan/topic" value="/$(arg my_ns)/laser/scan" />
+    <param name="~/local_costmap/obstacles_layer/scan/topic" value="/$(arg my_ns)/laser/scan" />
 
     <param name="~/global_costmap/robot_base_frame" value="$(arg my_ns)_tf/base_link" />
     <param name="~/local_costmap/robot_base_frame" value="$(arg my_ns)_tf/base_link" />
     <param name="~/local_costmap/global_frame" value="map" />
+    <param name="~/global_costmap/global_frame" value="map" />
   </node>
 </launch>

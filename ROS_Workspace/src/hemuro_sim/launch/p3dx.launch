@@ -6,7 +6,7 @@
     <arg name="my_ns"/>
 
 	<!-- Load the URDF into the ROS Parameter Server -->
-	<param name="robot_description" command="$(find xacro)/xacro.py '$(find p3dx_description)/urdf/pioneer3dx.xacro'" />
+	<param name="robot_description" command="$(find xacro)/xacro '$(find p3dx_description)/urdf/pioneer3dx.xacro'" />
 
     <node name="spawn_robot" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-urdf 
                 -urdf
@@ -25,6 +25,8 @@
 
 	<node name="$(arg robot_name)_robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
       <param name="tf_prefix" value="$(arg robot_name)_tf"/>
+      <param name="tf_prefix" value="$(arg robot_name)_tf"/>
+      <param name="prefix_tf_with" value="$(arg robot_name)_tf/"/>
     </node>
 	<!--<node pkg="tf" type="static_transform_publisher" name="odom" args="0 0 0 0 0 0 1 map $(arg robot_name)_tf/odom 100" />-->
 
