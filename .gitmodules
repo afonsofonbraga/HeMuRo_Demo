@@ -14,3 +14,6 @@
 	path = ROS_Workspace/src/battery_simulator
 	url = https://github.com/afonsofonbraga/battery_simulator
 	branch = master
+[submodule "ROS_Workspace/src/aws-robomaker-small-warehouse-world"]
+	path = ROS_Workspace/src/aws-robomaker-small-warehouse-world
+	url = https://github.com/afonsofonbraga/aws-robomaker-small-warehouse-world
