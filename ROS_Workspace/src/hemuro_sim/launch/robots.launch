@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-    <!-- BEGIN ROBOT Thor -->
+    <!-- BEGIN ROBOT Thor 
     <group ns="thor">
         <arg name="my_ns" value="thor" />
         <arg name="robot_name" value="$(arg my_ns)" />
@@ -25,7 +25,7 @@
         </include>
     </group> -->
 
-    <!-- BEGIN ROBOT Zeus -->
+    <!-- BEGIN ROBOT Zeus 
     <group ns="zeus">
         <arg name="my_ns" value="zeus" />
         <arg name="robot_name" value="$(arg my_ns)" />
@@ -77,7 +77,7 @@
         </include>
     </group> -->
     
-    <!-- BEGIN ROBOT  -->
+    <!-- BEGIN ROBOT  
     
     <group ns="athena">
         <arg name="my_ns" value="athena" />

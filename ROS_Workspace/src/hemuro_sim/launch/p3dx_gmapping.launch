@@ -1,36 +1,36 @@
 <launch>
-   <include file="$(find gazebo_ros)/launch/empty_world.launch">
-        <!-- Workaround for crashes in VMware -->
-        <env name="SVGA_VGPU10" value="0"/>
-        <arg name="gui" value="true"/>
-        <arg name="world_name" value="$(find aws_robomaker_hospital_world)/worlds/hospital.world"/> 
-        <!-- <arg name="world_name" value="$(find aws_robomaker_small_warehouse_world)/worlds/small_warehouse.world"/> -->
-        <arg name="verbose" value="true"/>
-    </include>
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <!-- Workaround for crashes in VMware -->
+    <env name="SVGA_VGPU10" value="0"/>
+    <arg name="gui" value="true"/>
+    <!--<arg name="world_name" value="$(find aws_robomaker_hospital_world)/worlds/hospital.world"/> -->
+    <arg name="world_name" value="$(find aws_robomaker_small_warehouse_world)/worlds/no_roof_small_warehouse.world"/> -->
+    <arg name="verbose" value="true"/>
+  </include>
   
    <!-- Starting robot--> 
-  <!--<group ns="p3dx">-->
-    <arg name="robot_model" default="$(find p3dx_description)/urdf/pioneer3dx.xacro"/>
-    <param name="robot_description" command="$(find xacro)/xacro '$(arg robot_model)'" />
-    <arg name="my_ns" value="" />
-    <arg name="robot_name" value="" />
-    <arg name="initial_pose_x" value="-2.0"/>
-    <arg name="initial_pose_y" value="7"/>
-    <arg name="initial_pose_a" value="0.0"/>
+  <group ns="afrodite">
+    <arg name="my_ns" value="afrodite" />
+    <arg name="robot_name" value="afrodite" />
     <param name="tf_prefix" value="$(arg my_ns)_tf" />
-
-    <include file="$(find p3dx_gazebo)/launch/one_robot.launch">
-      <arg name="init_pose" value="-x $(arg initial_pose_x) -y $(arg initial_pose_y) -z 0" />
+    <arg name="initial_pose_x" value="-2.0"/>
+    <arg name="initial_pose_y" value="7.0"/>
+    <arg name="initial_pose_a" value="0.0"/>
+        
+    <arg name="init_pose" value="-x $(arg initial_pose_x) -y $(arg initial_pose_y) -z 0" />
+          
+    <include file="$(find hemuro_sim)/launch/p3dx.launch">
+      <arg name="init_pose" value="$(arg init_pose)" />
       <arg name="robot_name" value="$(arg robot_name)" />
       <arg name="my_ns" value="$(arg my_ns)" />
     </include>
 
-    <include file="$(find rosbot_description)/launch/gmapping.launch">
-      
+    <include file="$(find rosbot_description)/launch/mrs_gmapping.launch">
+      <arg name="robot_name" value="$(arg my_ns)" /> 
     </include>
-  <!--</group>-->
+  </group>
 
-  <!--<arg name="robot_model" default="$(find p3dx_description)/urdf/pioneer3dx.xacro"/>
-  <param name="robot_description" command="$(find xacro)/xacro '$(arg robot_model)'" /> -->
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find rosbot_description)/rviz/rosbot.rviz" required="true" output="screen"/>
+  <arg name="robot_model" default="$(find p3dx_description)/urdf/pioneer3dx.xacro"/>
+  <param name="robot_description" command="$(find xacro)/xacro '$(arg robot_model)'" />
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find hemuro_sim)/rviz/joao.rviz" required="true" output="screen"/>-->
 </launch>

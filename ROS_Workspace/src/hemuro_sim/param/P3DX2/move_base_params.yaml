@@ -31,7 +31,7 @@ recovery_behavior_enabled: true
 
 #~clearing_rotation_allowed (bool, default: true)
 #Determines whether or not the robot will attempt an in-place rotation when attempting to clear out space. Note: This parameter is only used when the default recovery behaviors are in use, meaning the user has not set the recovery_behaviors parameter to anything custom.
-rotation_allowd: true
+rotation_allowed: true
 
 #~shutdown_costmaps (bool, default: false)
 #Determines whether or not to shutdown the costmaps of the node when move_base is in an inactive state
