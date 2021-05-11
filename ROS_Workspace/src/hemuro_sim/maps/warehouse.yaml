@@ -1,4 +1,4 @@
-image: /home/clever/Github/HeMuRo_Demo/ROS_Workspace/src/hemuro_sim/maps/warehouse.pgm
+image: /home/clever/catkin_ws/src/HeMuRo_Demo/ROS_Workspace/src/hemuro_sim/maps/warehouse.pgm
 resolution: 0.010000
 origin: [-15.240000, -15.240000, 0.000000]
 negate: 0

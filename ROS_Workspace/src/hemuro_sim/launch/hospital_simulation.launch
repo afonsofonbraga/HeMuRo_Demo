@@ -1,37 +1,84 @@
 <?xml version="1.0"?>
 <launch>
   <!-- start world -->
-  <!--<node name="gazebo" pkg="gazebo" type="gazebo" 
-   args="$(find your_pkg)/worlds/your.world" respawn="false" output="screen" />-->
-
-  <!-- start gui -->
-  <!--<node name="gazebo_gui" pkg="gazebo" type="gui" respawn="false" output="screen"/>-->
-  <!--<include file="$(find aws_robomaker_hospital_world)/launch/view_hospital.launch"/>-->
-  <!-- include our robots -->
-
-   <include file="$(find gazebo_ros)/launch/empty_world.launch">
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
         <!-- Workaround for crashes in VMware -->
         <env name="SVGA_VGPU10" value="0"/>
         <arg name="gui" value="true"/>
         <arg name="world_name" value="$(find aws_robomaker_hospital_world)/worlds/hospital.world"/> 
-        <!-- <arg name="world_name" value="$(find aws_robomaker_small_warehouse_world)/worlds/small_warehouse.world"/> -->
         <arg name="verbose" value="true"/>
-    </include>
+  </include>
   
-  
+  <!-- Loading map -->
   <arg name="map_file" default="$(find hemuro_sim)/maps/hospital.yaml"/>
-  
   <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" >
         <param name="frame_id" value="map"/>
   </node>
 
+  <!-- Loading UGV Robot -->
+  <group ns="thor">
+    <arg name="my_ns" value="thor" />
+    <arg name="initial_pose_x" value="4.0"/>
+    <arg name="initial_pose_y" value="7.0"/>
+    <arg name="initial_pose_a" value="0.0"/>
 
-  <include file="$(find hemuro_sim)/launch/robots.launch" />
+    <include file="$(find hemuro_sim)/launch/rosbot.launch" >
+      <arg name="my_ns" value="$(arg my_ns)" />
+      <arg name="initial_pose_x" value="$(arg initial_pose_x)"/>
+      <arg name="initial_pose_y" value="$(arg initial_pose_y)"/>
+      <arg name="initial_pose_a" value="$(arg initial_pose_a)"/>
+    </include>
+  </group>
+
+  <!-- Loading UGV Robot -->
+  <group ns="zeus">
+    <arg name="my_ns" value="zeus" />
+    <arg name="initial_pose_x" value="-4.0"/>
+    <arg name="initial_pose_y" value="7.0"/>
+    <arg name="initial_pose_a" value="0.0"/>
+
+    <include file="$(find hemuro_sim)/launch/rosbot.launch" >
+      <arg name="my_ns" value="$(arg my_ns)" />
+      <arg name="initial_pose_x" value="$(arg initial_pose_x)"/>
+      <arg name="initial_pose_y" value="$(arg initial_pose_y)"/>
+      <arg name="initial_pose_a" value="$(arg initial_pose_a)"/>
+    </include>
+  </group> -->
+
+  <!-- Loading UGV Robot -->
+  <group ns="afrodite">
+    <arg name="my_ns" value="afrodite" />
+    <arg name="initial_pose_x" value="-2.0"/>
+    <arg name="initial_pose_y" value="7.0"/>
+    <arg name="initial_pose_a" value="0.0"/>
+        
+    <include file="$(find hemuro_sim)/launch/p3dx.launch">
+      <arg name="my_ns" value="$(arg my_ns)" />
+      <arg name="initial_pose_x" value="$(arg initial_pose_x)"/>
+      <arg name="initial_pose_y" value="$(arg initial_pose_y)"/>
+      <arg name="initial_pose_a" value="$(arg initial_pose_a)"/>
+    </include>
+  </group>-->
+
+  <!-- Loading UGV Robot -->
+  <group ns="athena">
+    <arg name="my_ns" value="athena" />
+    <arg name="initial_pose_x" value="2.0"/>
+    <arg name="initial_pose_y" value="7.0"/>
+    <arg name="initial_pose_a" value="0.0"/>
+        
+    <include file="$(find hemuro_sim)/launch/p3dx.launch">
+      <arg name="my_ns" value="$(arg my_ns)" />
+      <arg name="initial_pose_x" value="$(arg initial_pose_x)"/>
+      <arg name="initial_pose_y" value="$(arg initial_pose_y)"/>
+      <arg name="initial_pose_a" value="$(arg initial_pose_a)"/>
+    </include>
+  </group>-->
 
   <!--<param name="robot_description" command="$(find xacro)/xacro '$(find rosbot_description)/urdf/rosbot.xacro'"/>
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find hemuro_sim)/rviz/thor.rviz" required="true" output="screen"/> -->
   
-  <arg name="robot_model" default="$(find p3dx_description)/urdf/pioneer3dx.xacro"/>
+  <!--<arg name="robot_model" default="$(find p3dx_description)/urdf/pioneer3dx.xacro"/>
   <param name="robot_description" command="$(find xacro)/xacro '$(arg robot_model)'" />
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find hemuro_sim)/rviz/joao.rviz" required="true" output="screen"/>-->
 </launch>

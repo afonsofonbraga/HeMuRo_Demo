@@ -1,37 +1,73 @@
 <?xml version="1.0"?>
 <launch>
   <!-- start world -->
-  <!--<node name="gazebo" pkg="gazebo" type="gazebo" 
-   args="$(find your_pkg)/worlds/your.world" respawn="false" output="screen" />-->
-
-  <!-- start gui -->
-  <!--<node name="gazebo_gui" pkg="gazebo" type="gui" respawn="false" output="screen"/>-->
-  <!--<include file="$(find aws_robomaker_hospital_world)/launch/view_hospital.launch"/>-->
-  <!-- include our robots -->
-
-   <include file="$(find gazebo_ros)/launch/empty_world.launch">
-        <!-- Workaround for crashes in VMware -->
-        <env name="SVGA_VGPU10" value="0"/>
-        <arg name="gui" value="true"/>
-        <!--<arg name="world_name" value="$(find aws_robomaker_hospital_world)/worlds/hospital.world"/> -->
-        <arg name="world_name" value="$(find aws_robomaker_small_warehouse_world)/worlds/no_roof_small_warehouse.world"/>
-        <arg name="verbose" value="true"/>
-    </include>
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <!-- Workaround for crashes in VMware -->
+    <env name="SVGA_VGPU10" value="0"/>
+    <arg name="gui" value="true"/>
+    <!--<arg name="world_name" value="$(find aws_robomaker_hospital_world)/worlds/hospital.world"/> -->
+    <arg name="world_name" value="$(find aws_robomaker_small_warehouse_world)/worlds/no_roof_small_warehouse.world"/>
+    <arg name="verbose" value="true"/>
+  </include>
   
-  
+  <!-- Loading map -->
   <arg name="map_file" default="$(find hemuro_sim)/maps/warehouse.yaml"/>
-  
   <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" >
         <param name="frame_id" value="map"/>
   </node>
 
+  <!-- Loading UGV Robot -->
+  <group ns="afrodite">
+    <arg name="my_ns" value="afrodite" />
+    <arg name="initial_pose_x" value="-2.0"/>
+    <arg name="initial_pose_y" value="7.0"/>
+    <arg name="initial_pose_a" value="0.0"/>
 
-  <include file="$(find hemuro_sim)/launch/robots.launch" />
+    <include file="$(find hemuro_sim)/launch/rosbot.launch" >
+      <arg name="my_ns" value="$(arg my_ns)" />
+      <arg name="initial_pose_x" value="$(arg initial_pose_x)"/>
+      <arg name="initial_pose_y" value="$(arg initial_pose_y)"/>
+      <arg name="initial_pose_a" value="$(arg initial_pose_a)"/>
+    </include>
+  </group>
+
+  <!-- Loading UAV Robot-->
+  <arg name="mav_id" default="0"/>
+  <arg name="est" default="ekf2"/> <!-- PX4 estimator: lpe, ekf2 -->
+  <arg name="vehicle" default="clover"/> <!-- PX4 vehicle configuration: clover, clover_vpe -->
+  <arg name="main_camera" default="true"/> <!-- Simulated vision position estimation camera (optical flow, ArUco) -->
+  <arg name="rangefinder" default="true"/> <!-- Simulated downward-facing rangefinder, vl53l1x-like -->
+  <arg name="led" default="true"/> <!-- Simulated LED strip, ws281x-like -->
+  <arg name="gps" default="true"/> <!--Simulated GPS module -->
+  <arg name="use_clover_physics" default="false"/> <!-- Use inertial parameters from CAD models -->
+
+  <!-- PX4 instance -->
+  <node name="sitl_$(arg mav_id)" pkg="px4" type="px4" output="screen" args="$(find px4)/ROMFS/px4fmu_common -s etc/init.d-posix/rcS -i $(arg mav_id)">
+        <env name="PX4_SIM_MODEL" value="$(arg vehicle)"/>
+        <env name="PX4_ESTIMATOR" value="$(arg est)"/>
+        <env name="EKF2_AID_MASK" value="0"/>
+  </node>
+
+    <!-- Clover model -->
+  <include file="$(find clover_description)/launch/spawn_drone.launch">
+        <arg name="main_camera" value="$(arg main_camera)"/>
+        <arg name="rangefinder" value="$(arg rangefinder)"/>
+        <arg name="led" value="$(arg led)"/>
+        <arg name="gps" value="$(arg gps)"/>
+        <arg name="use_clover_physics" value="$(arg use_clover_physics)"/>
+  </include>
+
+    <!-- Clover services -->
+  <include file="$(find clover)/launch/clover.launch">
+        <arg name="simulator" value="true"/>
+        <arg name="fcu_conn" value="sitl"/>
+        <arg name="fcu_ip" value="127.0.0.1"/>
+  </include>
 
   <!--<param name="robot_description" command="$(find xacro)/xacro '$(find rosbot_description)/urdf/rosbot.xacro'"/>
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find hemuro_sim)/rviz/thor.rviz" required="true" output="screen"/> -->
   
-  <arg name="robot_model" default="$(find p3dx_description)/urdf/pioneer3dx.xacro"/>
+  <!--<arg name="robot_model" default="$(find p3dx_description)/urdf/pioneer3dx.xacro"/>
   <param name="robot_description" command="$(find xacro)/xacro '$(arg robot_model)'" />
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find hemuro_sim)/rviz/joao.rviz" required="true" output="screen"/>-->
 </launch>

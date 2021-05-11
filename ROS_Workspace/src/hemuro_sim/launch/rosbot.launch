@@ -1,9 +1,16 @@
 <?xml version="1.0"?>
 
 <launch>
-    <arg name="robot_name"/>
-    <arg name="init_pose"/>
     <arg name="my_ns"/>
+    <arg name="initial_pose_x"/>
+    <arg name="initial_pose_y"/>
+    <arg name="initial_pose_a"/>
+ 
+    <!--<arg name="robot_name"/>-->
+    <!--<arg name="init_pose"/>-->
+    <arg name="robot_name" value="$(arg my_ns)" />
+    <param name="tf_prefix" value="$(arg my_ns)_tf" />
+	<arg name="init_pose" value="-x $(arg initial_pose_x) -y $(arg initial_pose_y) -z 0" />
 
     <param name="robot_description" command="$(find xacro)/xacro '$(find rosbot_description)/urdf/rosbot.xacro' robot_namespace:=$(arg robot_name)"/>
     <node name="rosbot_spawn" pkg="gazebo_ros" type="spawn_model" args="$(arg init_pose) -urdf -param robot_description -model $(arg robot_name) -robot_namespace $(arg robot_name)"
@@ -19,6 +26,14 @@
       <param name="prefix_tf_with" value="$(arg robot_name)_tf/"/>
     </node>
     <node pkg="tf" type="static_transform_publisher" name="odom" args="0 0 0 0 0 0 1 map $(arg robot_name)_tf/odom 100" />
+
+
+	<include file="$(find hemuro_sim)/launch/move_base_rosbot2.launch">
+        <arg name="my_ns" value="$(arg my_ns)" />
+        <arg name="initial_pose_x" value="$(arg initial_pose_x)"/>
+        <arg name="initial_pose_y" value="$(arg initial_pose_y)"/>
+        <arg name="initial_pose_a" value="$(arg initial_pose_a)"/>
+    </include>
 
     <node pkg="battery_simulator" type="battery2" name="battery" output="screen">
 			<!-- This node publishes to the topics power (Int32), voltage (Float32), percent (Float32) and recharging (Bool) -->

@@ -47,7 +47,7 @@ oscillation_distance: 0.2
 
 #~planner_frequency (double, default: 0.0)
 #The rate in Hz at which to run the global planning loop. If the frequency is set to 0.0, the global planner will only run when a new goal is received or the local planner reports that its path is blocked. New in navigation 1.6.0
-planner_frequency: 1.0
+planner_frequency: 0.0
 
 #~max_planning_retries (int32_t, default: -1)
 #How many times to allow for planning retries before executing recovery behaviors. A value of -1.0 corresponds to an infinite retries.
